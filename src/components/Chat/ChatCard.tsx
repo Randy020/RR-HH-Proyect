@@ -20,7 +20,7 @@ const ChatCard = () => {
   };
 
   // Función para guardar el pago en Firestore
-  const savePaymentToFirestore = async (paymentType) => {
+  const savePaymentToFirestore = async (paymentType: string) => {
     try {
       // Obtener el UID del usuario logeado
       const uid = auth.currentUser?.uid;
@@ -76,7 +76,9 @@ const ChatCard = () => {
 
       {/* Botón agregar publicidad */}
      
-  <h1 className="text-2xl font-bold text-center text-gray-800">Iniciativa de marketing</h1>
+      <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white">Iniciativa de marketing</h1>
+      <br></br>
+
 
       <DisplayImages/>
 
@@ -101,57 +103,83 @@ const ChatCard = () => {
                 <p className="text-lg font-semibold">Opción 1: Pago Mensual</p>
                 <p className="text-gray-600">Paga $33 cada mes para mantener tu publicidad activa.</p>
                 <PayPalButtons
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: "33.00", // Monto mensual
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    return actions.order?.capture().then((details) => {
-                      alert(`Pago mensual completado por ${details?.payer?.name?.given_name}`);
-                      savePaymentToFirestore("mensual"); // Guardar en Firestore
-                      toggleModal(); // Cierra el modal después de completar el pago
-                    });
-                  }}
-                  onError={(err) => {
-                    console.error("Error en el pago mensual:", err);
-                  }}
-                />
+  createOrder={(data, actions) => {
+    return actions.order?.create({
+      intent: "CAPTURE", // Define la intención de pago
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: "33.00",  // Monto mensual
+          },
+        },
+      ],
+    });
+  }}
+  onApprove={(data, actions) => {
+    if (actions.order) {
+      return actions.order.capture().then((details) => {
+        alert(`Pago mensual completado`);
+        savePaymentToFirestore("mensual");
+        toggleModal();
+        return Promise.resolve();  // Asegura que siempre se devuelva una promesa
+      }).catch((err) => {
+        console.error("Error en la captura del pago:", err);
+        return Promise.resolve();  // También devolver una promesa en caso de error
+      });
+    } else {
+      console.error("Order no disponible");
+      return Promise.resolve();  // Devolver una promesa vacía si `order` es undefined
+    }
+  }}
+  onError={(err) => {
+    console.error("Error en el pago mensual:", err);
+    return Promise.resolve();  // Asegura que siempre se devuelva una promesa
+  }}
+/>
+
               </div>
 
               {/* Opción 2: Pago anual */}
               <div className="p-4 rounded-md border border-gray-300 shadow-sm hover:shadow-lg transition duration-200 w-1/2">
                 <p className="text-lg font-semibold">Opción 2: Pago Anual</p>
                 <p className="text-gray-600">Ahorra pagando un  descuento de $360 por todo un año.</p>
-                <PayPalButtons
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: "360.00", // Monto anual (33 * 12)
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    return actions.order?.capture().then((details) => {
-                      alert(`Pago anual completado por ${details?.payer?.name?.given_name}`);
-                      savePaymentToFirestore("anual"); // Guardar en Firestore
-                      toggleModal(); // Cierra el modal después de completar el pago
-                    });
-                  }}
-                  onError={(err) => {
-                    console.error("Error en el pago anual:", err);
-                  }}
-                />
+
+                 <PayPalButtons
+                 createOrder={(data, actions) => {
+                   return actions.order?.create({
+                     intent: "CAPTURE", // Define la intención de pago
+                     purchase_units: [
+                       {
+                         amount: {
+                           currency_code: "USD",
+                           value: "360.00",  // Monto mensual
+                         },
+                       },
+                     ],
+                   });
+                 }}
+                 onApprove={(data, actions) => {
+                   if (actions.order) {
+                     return actions.order.capture().then((details) => {
+                       alert(`Pago mensual completado`);
+                       savePaymentToFirestore("mensual");
+                       toggleModal();
+                       return Promise.resolve();  // Asegura que siempre se devuelva una promesa
+                     }).catch((err) => {
+                       console.error("Error en la captura del pago:", err);
+                       return Promise.resolve();  // También devolver una promesa en caso de error
+                     });
+                   } else {
+                     console.error("Order no disponible");
+                     return Promise.resolve();  // Devolver una promesa vacía si `order` es undefined
+                   }
+                 }}
+                 onError={(err) => {
+                   console.error("Error en el pago mensual:", err);
+                   return Promise.resolve();  // Asegura que siempre se devuelva una promesa
+                 }}
+               />
               </div>
             </div>
 

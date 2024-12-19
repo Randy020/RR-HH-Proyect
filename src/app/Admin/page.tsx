@@ -23,7 +23,7 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 
 const Profile = () => {
    const [isAdmin, setIsAdmin] = useState(false);
-    const [docId, setDocId] = useState(null);
+   const [docId, setDocId] = useState<string | null>(null);
     const auth = getAuth();
     const db = getFirestore();
     const router = useRouter(); 

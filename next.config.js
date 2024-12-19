@@ -21,6 +21,10 @@ const nextConfig = {
   experimental: {
     appDir: true,  // Si usas la nueva estructura de Next.js 13+
   },
+  i18n: {
+    locales: ['es'],  // Idioma disponible (español)
+    defaultLocale: 'es',  // Idioma por defecto (español)
+  },
 };
 
 module.exports = nextConfig;
