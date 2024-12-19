@@ -48,6 +48,12 @@ const VideoActions = ({ videoUrl }) => {
       >
         Eliminar URL
       </button>
+      <a
+  href="/Admin"
+  className="text-green-500 hover:text-blue-600 transition-transform duration-200 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full px-6 py-2 inline-block"
+>
+  Opciones de Administrador
+</a>
     </div>
   );
 };

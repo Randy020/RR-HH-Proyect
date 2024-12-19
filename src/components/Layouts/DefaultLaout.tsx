@@ -4,6 +4,14 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Footer from "./Footerx"
 import ActionButtons from "./buttonAdmin"
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title:
+    "OFC Consulting",
+  description: "This is Next.js Home page for NextAdmin Dashboard Kit",
+};
 
 export default function DefaultLayout({
   children,

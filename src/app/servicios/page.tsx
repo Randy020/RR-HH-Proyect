@@ -4,8 +4,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import HRServices from "./HRServices";
 
 export const metadata: Metadata = {
-  title: "Next.js Profile Page | NextAdmin - Next.js Dashboard Kit",
-  description: "This is Next.js Profile page for NextAdmin Dashboard Kit",
+  title:
+    "OFP Consulting",
+  description: "Esta es una aplicacion de Contratacion y aplicacion para puestos",
 };
 
 const Profile = () => {

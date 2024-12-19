@@ -41,11 +41,9 @@ const ContactUs = () => {
             </Typography>
             <Typography variant="body1">
               Nos encontramos en la Avenida Venezuela, esquina Ozama, No. 61, Plaza Pereyra 1er Nivel, Local 1-03.
-              Fácil acceso y estacionamiento disponible.
+              Fácil acceso.
             </Typography>
-            <Button variant="contained" sx={{ marginTop: 2 }}>
-              Leer Más
-            </Button>
+            
           </Box>
         </Grid>
 
@@ -65,9 +63,7 @@ const ContactUs = () => {
             <Typography variant="body1">
               Lunes a viernes de 8:00 AM a 12:00 PM y de 1:00 PM a 4:00 PM. Si necesitas una cita fuera de este horario, contáctanos.
             </Typography>
-            <Button variant="contained" sx={{ marginTop: 2 }}>
-              Leer Más
-            </Button>
+            
           </Box>
         </Grid>
 
@@ -87,9 +83,7 @@ const ContactUs = () => {
             <Typography variant="body1">
               Nuestra oficina está diseñada para ser accesible para todos. Contamos con facilidades para personas con movilidad reducida.
             </Typography>
-            <Button variant="contained" sx={{ marginTop: 2 }}>
-              Leer Más
-            </Button>
+            
           </Box>
         </Grid>
       </Grid>

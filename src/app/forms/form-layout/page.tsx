@@ -6,6 +6,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid"; // Importamos UUID
 import ChatCard from "@/components/Chat/ChatCard";
+import { useRouter } from "next/navigation"; 
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
@@ -13,6 +14,7 @@ import InputGroup from "@/components/FormElements/InputGroup";
 import GlitchLoader from "./GlitchLoader"; 
 
 const FormLayout = () => {
+  const router = useRouter(); // Inicializa useRouter
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -83,6 +85,11 @@ const FormLayout = () => {
         cedulaPasaporte: "", // Limpiar el nuevo campo
       });
       setCurriculum({ file: null, uniqueFileName: null }); // Limpiar archivo seleccionado
+
+       // Redirige a la ruta raíz
+       router.push("/");
+
+
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       alert("Hubo un error al enviar el formulario.");
@@ -105,9 +112,8 @@ const FormLayout = () => {
           <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
               <h3 className="font-semibold text-dark dark:text-white">
-                Formulario de Registro
+                Formulario de Registro / Es obligatorio completar todos los campos
               </h3>
-              <GlitchLoader/>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="p-6.5">
@@ -115,7 +121,7 @@ const FormLayout = () => {
                 {/* Adjuntar Currículum */}
                 <div className="mb-4.5">
                   <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
-                    Sube o Arastra tu Currículum
+                    Sube o Arastra tu Currículum Aqui con su foto
                   </label>
                   <input
                     type="file"
@@ -249,7 +255,7 @@ const FormLayout = () => {
                     className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5 py-3 text-dark outline-none transition placeholder:text-dark-6 focus:border-primary active:border-primary disabled:cursor-default dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
                     value={formData.comentarios}
                     onChange={handleInputChange}
-                    required
+                 
                   />
                 </div>
 

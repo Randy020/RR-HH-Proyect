@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "@/lib/firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
@@ -9,6 +10,8 @@ import { getAuth } from "firebase/auth";
 const FileUploader = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
 
   const handleFiles = useCallback((newFiles: File[]) => {
     const validFiles = newFiles.filter((file) => typeValidation(file.type));
@@ -33,6 +36,7 @@ const FileUploader = () => {
 
     const userId = user.uid;
     const storageRef = ref(storage, `imagenes/${fileId}-${file.name}`);
+
     uploadBytes(storageRef, file)
       .then((snapshot) => {
         getDownloadURL(snapshot.ref).then((downloadURL) => {
@@ -46,6 +50,7 @@ const FileUploader = () => {
           })
             .then(() => {
               setUploadedFiles((prev) => [...prev, file.name]);
+              setShowModal(true); // Mostrar modal después de subir
             })
             .catch((error) => {
               console.error("Error al guardar el archivo en Firestore:", error);
@@ -104,6 +109,26 @@ const FileUploader = () => {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Modal de confirmación */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center dark:bg-gray-800">
+            <h2 className="text-2xl font-bold text-dark dark:text-white">
+              ¡Archivo Subido!
+            </h2>
+            <p className="mt-4 text-gray-700 dark:text-gray-300">
+              Tu oferta de empleo se ha subido exitosamente.
+            </p>
+            <button
+              onClick={() => router.push("/")}
+              className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Aceptar
+            </button>
+          </div>
         </div>
       )}
     </div>

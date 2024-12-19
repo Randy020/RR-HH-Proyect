@@ -1,12 +1,31 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+'use client'; // Agrega esta directiva al inicio del archivo
+
+import React, { useEffect, useState } from 'react';
 import { Typography, Box, Button, Card, CardContent, CardMedia, Grid, useTheme, ThemeProvider, createTheme } from '@mui/material';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { db } from "@/lib/firebaseConfig"; // Importa la instancia de Firestore ya configurada
 
 const RecursosHumanos = () => {
   const [mode, setMode] = useState('light'); // Estado para cambiar entre modo claro y oscuro
+  const [data, setData] = useState([]);
   const theme = useTheme();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "textoBG"));
+        const documents = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setData(documents);
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+      }
+    };
+
+    fetchData();
+
     // Se obtiene la preferencia del usuario y se aplica el modo oscuro o claro
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     setMode(prefersDarkMode ? 'dark' : 'light');
@@ -29,30 +48,9 @@ const RecursosHumanos = () => {
     },
   });
 
-  // Datos de los artículos
-  const articles = [
-    {
-      title: "Cómo Optimizar tu Currículum",
-      description:
-        "Un currículum bien estructurado es tu carta de presentación ante los reclutadores. En este artículo, te proporcionamos consejos sobre cómo destacar tus habilidades y experiencias relevantes, así como el formato adecuado para captar la atención de los empleadores.",
-      imageUrl: "https://i.pinimg.com/736x/db/be/f8/dbbef80a7cf8327ec5a09032fd4fd8c0.jpg",
-      link: "#", // Link para leer más
-    },
-    {
-      title: "Preparación Efectiva para la Entrevista",
-      description:
-        "La entrevista es una de las etapas más cruciales en el proceso de selección. Prepararse adecuadamente puede marcar la diferencia entre conseguir el trabajo o no. En este artículo, te compartimos estrategias para anticipar las preguntas más comunes, cómo presentar tus fortalezas y debilidades de manera efectiva.",
-      imageUrl: "https://i.pinimg.com/736x/47/f1/8a/47f18aa8d7ccc7f9839db13a28c2b842.jpg",
-      link: "#", // Link para leer más
-    },
-    {
-      title: "Networking: Construyendo Relaciones Profesionales",
-      description:
-        "El networking es una herramienta poderosa en la búsqueda de empleo. Establecer y mantener relaciones profesionales puede abrir puertas y generar oportunidades inesperadas. En este artículo, discutimos cómo construir una red de contactos efectiva.",
-      imageUrl: "https://i.pinimg.com/736x/15/21/c7/1521c7781296d344caf0426669695a5d.jpg",
-      link: "#", // Link para leer más
-    },
-  ];
+  if (data.length === 0) {
+    return <div>Cargando...</div>; // Mensaje mientras se cargan los datos
+  }
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -68,37 +66,26 @@ const RecursosHumanos = () => {
         </Typography>
 
         <Grid container spacing={4} justifyContent="center">
-          {articles.map((article, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+          {data.map((item) => (
+            <Grid item xs={12} sm={6} md={4} key={item.id}>
               <Card sx={{ maxWidth: 345, boxShadow: 3, borderRadius: 3, backgroundColor: 'background.paper' }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={article.imageUrl}
-                  alt={article.title}
-                  sx={{ borderTopLeftRadius: 3, borderTopRightRadius: 3 }}
-                />
+                {item.image && (
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={item.image}
+                    alt={item.title}
+                    sx={{ borderTopLeftRadius: 3, borderTopRightRadius: 3 }}
+                  />
+                )}
                 <CardContent>
                   <Typography variant="h6" sx={{ fontWeight: 500, marginBottom: 2 }}>
-                    {article.title}
+                    {item.title}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2 }}>
-                    {article.description}
+                    {item.contenido}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    href={article.link}
-                    sx={{
-                      textTransform: 'none',
-                      padding: '10px',
-                      borderRadius: 3,
-                      fontWeight: 600,
-                    }}
-                  >
-                    Leer Más
-                  </Button>
+              
                 </CardContent>
               </Card>
             </Grid>

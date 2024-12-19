@@ -5,8 +5,8 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "OFC Consulting",
-  description: "This is Next.js Home page for NextAdmin Dashboard Kit",
+    "OFP Consulting",
+  description: "Esta es una aplicacion de Contratacion y aplicacion para puestos",
 };
 
 export default function Home() {

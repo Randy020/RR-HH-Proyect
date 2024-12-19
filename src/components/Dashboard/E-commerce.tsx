@@ -30,9 +30,16 @@ const ECommerce: React.FC = () => {
 
       
       </div>
-        <h1 className="text-3xl font-extrabold text-center text-gray-900 dark:text-white mt-8 mb-4">
-  Coloca tu curriculum <Link href="/forms/form-layout" className="text-blue-500 hover:underline">aquí</Link> y aplica para miles de ofertas de empleo para ti
+      <h1 className="text-3xl font-extrabold text-center text-gray-900 dark:text-white mt-8 mb-4">
+  <span className="block md:hidden">
+  Coloca  <Link href="/forms/form-layout" className="text-blue-500 hover:underline">aquí</Link> tu mejor curriculum y aplica para miles de ofertas de empleo para ti
+  
+  </span>
+  <span className="hidden md:block">
+    Coloca tu curriculum <Link href="/forms/form-layout" className="text-blue-500 hover:underline">aquí</Link> y aplica para miles de ofertas de empleo para ti
+  </span>
 </h1>
+
         <VideoWithMuteToggle/>
           <TableOne />
         </div>
